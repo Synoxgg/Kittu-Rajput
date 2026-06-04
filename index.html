@@ -1,0 +1,107 @@
+```html
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kittu Rajput - Butterfly Gallery</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background-color: #fdf2f8; /* Halka pink background */
+        }
+        .gallery-img { 
+            transition: transform 0.4s ease; 
+        }
+        .group:hover .gallery-img { 
+            transform: scale(1.1); 
+        }
+        /* Loader animation */
+        .skeleton {
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+</head>
+<body class="text-gray-800 flex flex-col min-h-screen">
+
+    <!-- Header Section -->
+    <header class="bg-white shadow-md py-8 text-center sticky top-0 z-10">
+        <h1 class="text-4xl md:text-5xl font-bold text-pink-600 tracking-wide mb-2">Kittu Rajput</h1>
+        <p class="text-lg md:text-xl text-gray-500 font-medium">20 Khoobsurat Titliyon Ka Sangrah 🦋</p>
+    </header>
+
+    <!-- Main Gallery Section -->
+    <main class="flex-grow container mx-auto px-4 py-10">
+        <!-- Grid layout for the gallery -->
+        <div id="gallery" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 lg:grid-cols-5 gap-6">
+            <!-- JavaScript ki madad se 20 photos yaha automatic aayengi -->
+        </div>
+    </main>
+
+    <!-- Footer Section (Credit to Anurag Patel) -->
+    <footer class="bg-gray-900 text-white py-8 text-center mt-auto shadow-inner">
+        <div class="container mx-auto px-4">
+            <p class="text-lg md:text-xl font-light">
+                Yeh website <span class="text-pink-400 font-bold text-2xl mx-1">Anurag Patel</span> dwara banayi gayi hai ❤️
+            </p>
+            <p class="text-sm text-gray-400 mt-2">© 2026 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript to load images -->
+    <script>
+        // Gallery container ko select karna
+        const galleryContainer = document.getElementById('gallery');
+        const totalImages = 20; // 20 butterflies chahiye
+
+        // 20 photos generate karne ke liye loop
+        for (let i = 1; i <= totalImages; i++) {
+            
+            // Image card container banana
+            const card = document.createElement('div');
+            card.className = 'overflow-hidden rounded-2xl shadow-lg bg-white relative group aspect-square cursor-pointer skeleton';
+
+            // Image element banana (Direct internet URL ka use karte hue)
+            // Note: loremflickr ek free image API hai jo butterfly ki alag-alag photos degi lock parameter ke hisab se
+            const img = document.createElement('img');
+            img.src = `https://loremflickr.com/600/600/butterfly?lock=${i + 10}`; 
+            img.alt = `Butterfly Type ${i}`;
+            img.className = 'w-full h-full object-cover gallery-img opacity-0 transition-opacity duration-500';
+            img.loading = 'lazy'; // Lazy loading se website fast khulegi
+
+            // Jab image load ho jaye tab skeleton loader hatana
+            img.onload = () => {
+                card.classList.remove('skeleton');
+                img.classList.remove('opacity-0');
+            };
+
+            // Hover karne par overlay text aayega
+            const overlay = document.createElement('div');
+            overlay.className = 'absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300';
+            
+            const text = document.createElement('span');
+            text.className = 'text-white font-semibold text-lg md:text-xl px-4 py-2 border-2 border-white rounded-lg backdrop-blur-sm';
+            text.textContent = `Titli ${i}`;
+            
+            // Elements ko card me jodna aur phir card ko gallery me jodna
+            overlay.appendChild(text);
+            card.appendChild(img);
+            card.appendChild(overlay);
+            
+            galleryContainer.appendChild(card);
+        }
+    </script>
+</body>
+</html>
+
+```
